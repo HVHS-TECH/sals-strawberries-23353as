@@ -32,13 +32,21 @@
       <label for="fruitQuantity">How many servings per week?</label>
       <input type="number" id="fruitQuantity" name="fruitQuantity" required />
 
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" required />
+
       <!-- add more fields here -->
     </form>
 
     <button onclick="writeForm()">Submit</button>
     <button onclick="sendEmail()">E-mail</button>
+    <p id="statusMessage"></p>
+
+    <div id="emailMessage"></div>
 
     <p id="statusMessage"></p>
+
+    <img id="userPfp" />
   </div>
 </body>
 </html>

@@ -15,6 +15,10 @@ function writeForm() {
   const fruitQuantity =
     document.getElementById("fruitQuantity").value;
 
+    const age =
+    document.getElementById("age").value;
+
+
   // Get logged-in user
   let user = firebase.auth().currentUser;
 
@@ -26,7 +30,7 @@ function writeForm() {
 
   }
 
-  if (!name || !favoriteFruit || !fruitQuantity) {
+  if (!name || !favoriteFruit || !fruitQuantity || !age) {
 
     alert("Please fill all the boxes.");
     return;
@@ -34,6 +38,7 @@ function writeForm() {
   }
 
   let userID = user.uid;
+  let userImage = user.photoURL;
 
   console.log(userID);
 
@@ -42,7 +47,8 @@ function writeForm() {
 
     name: name,
     favoriteFruit: favoriteFruit,
-    fruitQuantity: fruitQuantity
+    fruitQuantity: fruitQuantity,
+    age: age
 
   });
 
@@ -64,6 +70,9 @@ function fb_login() {
       console.log("Logged in");
       console.log(user);
 
+      // 👇 THIS is the important part
+      document.getElementById("userPfp").src = user.photoURL;
+
     } else {
 
       console.log("Not logged in");
@@ -78,23 +87,83 @@ function fb_login() {
         .signInWithPopup(provider)
         .then(function(result) {
 
-          var token =
-            result.credential.accessToken;
-
           var user = result.user;
 
           console.log(user);
 
+          // 👇 set pfp here too (important for first login)
+          document.getElementById("userPfp").src = user.photoURL;
+
         })
         .catch(function(error) {
-
           console.log(error);
-
         });
     }
   });
 }
 
-function sendEmail(){
-  
+function sendEmail() {
+
+  let user = firebase.auth().currentUser;
+
+  if (!user) {
+    alert("Please log in first.");
+    return;
+  }
+
+  let userID = user.uid;
+  let email = user.email;
+
+  // Read data from Firebase
+  firebase.database()
+    .ref("fruitForms/" + userID)
+    .once("value")
+    .then((snapshot) => {
+
+      const data = snapshot.val();
+
+      if (!data) {
+        alert("No form data found in database.");
+        return;
+      }
+
+      const name = data.name;
+      const favoriteFruit = data.favoriteFruit;
+      const fruitQuantity = data.fruitQuantity;
+
+      document.getElementById('emailMessage').innerHTML = `
+
+        <div>
+          <p>To: ${email}</p>
+          <p>From: Sal's Strawberry Saloon</p>
+
+          <p>Hello, ${name}</p>
+
+          <p>
+            This is Sal's Strawberry Saloon,
+            reaching out about your car's extended insurance policy.
+          </p>
+
+          <p>
+            Also, we are offering a deal on your favorite fruit:
+            ${favoriteFruit}
+          </p>
+
+          <p>
+            You can get ${fruitQuantity} servings per week
+            for 27.3% more!
+          </p>
+
+          <p>
+            Best regards,<br>
+            Sal's Strawberry Saloon
+          </p>
+        </div>
+
+      `;
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
