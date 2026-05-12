@@ -40,6 +40,23 @@
 
     <button onclick="writeForm()">Submit</button>
     <button onclick="sendEmail()">E-mail</button>
+    <button onclick="showReviews()">Reviews</button>
+
+    <div id="reviewSection" style="display: none;">
+
+  <h2>Leave a Review</h2>
+
+  <textarea id="reviewText"
+  placeholder="Write your review here"></textarea>
+
+  <button onclick="reviews()">Post Review</button>
+
+  <h2>Customer Reviews</h2>
+
+  <div id="reviewsContainer"></div>
+
+</div>
+
     <p id="statusMessage"></p>
 
     <div id="emailMessage"></div>

@@ -70,7 +70,6 @@ function fb_login() {
       console.log("Logged in");
       console.log(user);
 
-      // 👇 THIS is the important part
       document.getElementById("userPfp").src = user.photoURL;
 
     } else {
@@ -91,7 +90,6 @@ function fb_login() {
 
           console.log(user);
 
-          // 👇 set pfp here too (important for first login)
           document.getElementById("userPfp").src = user.photoURL;
 
         })
@@ -103,6 +101,8 @@ function fb_login() {
 }
 
 function sendEmail() {
+
+  document.getElementById("reviewSection").style.display = "none";
 
   let user = firebase.auth().currentUser;
 
@@ -166,4 +166,84 @@ function sendEmail() {
     .catch((error) => {
       console.log(error);
     });
+}
+
+function reviews() {
+
+  let user = firebase.auth().currentUser;
+
+  if (!user) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const reviewText =
+    document.getElementById("reviewText").value;
+
+  if (!reviewText) {
+    alert("Please write a review.");
+    return;
+  }
+
+  firebase.database().ref("reviews").push({
+
+    name: user.displayName,
+    review: reviewText,
+    profilePicture: user.photoURL
+
+  });
+
+  document.getElementById("reviewText").value = "";
+
+  // SHOW reviews immediately
+  document.getElementById("reviewSection").style.display = "block";
+
+  loadReviews();
+
+}
+
+function loadReviews() {
+
+  firebase.database()
+    .ref("reviews")
+    .once("value")
+    .then((snapshot) => {
+
+      const data = snapshot.val();
+
+      let html = "";
+
+      for (let id in data) {
+
+        let review = data[id];
+
+        html += `
+          <div class="reviewCard">
+            <img src="${review.profilePicture}" width="50">
+            <h3>${review.name}</h3>
+            <p>${review.review}</p>
+          </div>
+        `;
+
+      }
+
+      document.getElementById("reviewsContainer").innerHTML = html;
+
+    });
+
+}
+
+function showReviews() {
+
+
+  document.getElementById("emailMessage").innerHTML = "";
+
+
+  document.getElementById("reviewSection").style.display =
+
+  document.getElementById("statusMessage").innerText = "";
+
+
+  loadReviews();
+
 }
