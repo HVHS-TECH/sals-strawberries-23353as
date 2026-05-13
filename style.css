@@ -91,3 +91,16 @@ button:hover {
   border-radius: 50%;
 
 }
+
+select {
+  width: 103%;
+  padding: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  font-size: 16px;
+  font-family: inherit;
+
+  box-sizing: border-box;
+}

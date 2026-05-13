@@ -10,7 +10,7 @@ function writeForm() {
     document.getElementById("name").value;
 
   const favoriteFruit =
-    document.getElementById("favoriteFruit").value;
+  document.getElementById("fruits").value;
 
   const fruitQuantity =
     document.getElementById("fruitQuantity").value;
@@ -42,7 +42,7 @@ function writeForm() {
 
   console.log(userID);
 
-  // Save data using UID as the key
+
   firebase.database().ref("fruitForms/" + userID).set({
 
     name: name,
@@ -68,7 +68,7 @@ function fb_login() {
     if (user) {
 
       console.log("Logged in");
-      console.log(user);
+
 
       document.getElementById("userPfp").src = user.photoURL;
 
@@ -195,7 +195,6 @@ function reviews() {
 
   document.getElementById("reviewText").value = "";
 
-  // SHOW reviews immediately
   document.getElementById("reviewSection").style.display = "block";
 
   loadReviews();
@@ -235,15 +234,58 @@ function loadReviews() {
 
 function showReviews() {
 
-
   document.getElementById("emailMessage").innerHTML = "";
 
-
-  document.getElementById("reviewSection").style.display =
+  document.getElementById("reviewSection").style.display = "block";
 
   document.getElementById("statusMessage").innerText = "";
 
-
   loadReviews();
 
+}
+
+function fruitRanks() {
+
+  firebase.database().ref("fruitForms").once("value")
+    .then((snapshot) => {
+
+      const data = snapshot.val();
+
+      if (!data) {
+        alert("No data found.");
+        return;
+      }
+
+      let fruitCounts = {};
+
+      // Count fruits
+      for (let userID in data) {
+        let fruit = data[userID].favoriteFruit;
+
+        if (fruit) {
+          fruitCounts[fruit] = (fruitCounts[fruit] || 0) + 1;
+        }
+      }
+
+      // Convert to array and sort
+      let sortedFruits = Object.entries(fruitCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      // Build HTML
+      let html = "<h2>Top 5 Fruits</h2>";
+
+      sortedFruits.forEach(([fruit, count], index) => {
+        html += `<p>${index + 1}. ${fruit} - ${count} vote(s)</p>`;
+      });
+
+      // Display it
+      document.getElementById("emailMessage").innerHTML = html;
+      document.getElementById("reviewSection").style.display = "none";
+      document.getElementById("statusMessage").innerText = "";
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
