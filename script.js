@@ -63,35 +63,41 @@ function writeForm() {
 
 function fb_login() {
 
-  // Ask user for email and password
-  const email = prompt("Enter your email:");
-  const password = prompt("Enter your password:");
+  firebase.auth().onAuthStateChanged((user) => {
 
-  // Check inputs
-  if (!email || !password) {
+    if (user) {
 
-    alert("Please enter both email and password.");
-    return;
+      console.log("Logged in");
 
-  }
 
-  // Create unique ID
-  let loginID = Date.now();
+      document.getElementById("userPfp").src = user.photoURL;
 
-  // Save to Firebase Database
-  firebase.database().ref("logins/" + loginID).set({
+    } else {
 
-    email: email,
-    password: password,
-    loginTime: new Date().toLocaleString()
+      console.log("Not logged in");
 
+      var provider =
+        new firebase.auth.GoogleAuthProvider();
+
+      provider.addScope('profile');
+      provider.addScope('email');
+
+      firebase.auth()
+        .signInWithPopup(provider)
+        .then(function(result) {
+
+          var user = result.user;
+
+          console.log(user);
+
+          document.getElementById("userPfp").src = user.photoURL;
+
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   });
-
-  console.log("Login info saved!");
-
-  document.getElementById("statusMessage").innerText =
-    "Information saved to database.";
-
 }
 
 function sendEmail() {
@@ -256,8 +262,9 @@ function fruitRanks() {
       for (let userID in data) {
         let fruit = data[userID].favoriteFruit;
 
+        if (fruit) {
           fruitCounts[fruit] = (fruitCounts[fruit] || 0) + 1;
-
+        }
       }
 
       // Convert to array and sort
@@ -265,7 +272,7 @@ function fruitRanks() {
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
 
-      
+      // Build HTML
       let html = "<h2>Top 5 Fruits</h2>";
 
       sortedFruits.forEach(([fruit, count], index) => {
