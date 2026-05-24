@@ -3,6 +3,7 @@ console.log("Running Sal's Strawberries");
 // -----------------------------------
 // Form Function
 // -----------------------------------
+let selectedRating = 0;
 
 function writeForm() {
 
@@ -10,12 +11,12 @@ function writeForm() {
     document.getElementById("name").value;
 
   const favoriteFruit =
-  document.getElementById("fruits").value;
+    document.getElementById("fruits").value;
 
   const fruitQuantity =
     document.getElementById("fruitQuantity").value;
 
-    const age =
+  const age =
     document.getElementById("age").value;
 
 
@@ -84,7 +85,7 @@ function fb_login() {
 
       firebase.auth()
         .signInWithPopup(provider)
-        .then(function(result) {
+        .then(function (result) {
 
           var user = result.user;
 
@@ -93,7 +94,7 @@ function fb_login() {
           document.getElementById("userPfp").src = user.photoURL;
 
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
@@ -289,3 +290,73 @@ function fruitRanks() {
       console.log(error);
     });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  let selectedRating = -1;
+
+  const berries = document.querySelectorAll(".berry");
+
+  berries.forEach((berry, index) => {
+
+    berry.addEventListener("mouseover", () => {
+
+      berries.forEach((b, i) => {
+
+        if (i <= index) {
+
+          b.src = "IMAGES/PINK STRAWBERRIES.png";
+
+        } else {
+
+          b.src = "IMAGES/BLACK STRAWBERRIES.png";
+
+        }
+
+      });
+
+    });
+
+    berry.addEventListener("click", () => {
+
+      selectedRating = index;
+
+      berries.forEach((b, i) => {
+
+        if (i <= index) {
+
+          b.src = "IMAGES/STRAWBERRIES.png";
+
+        } else {
+
+          b.src = "IMAGES/BLACK STRAWBERRIES.png";
+
+        }
+
+      });
+
+    });
+
+  });
+
+
+  document.getElementById("strawberryRating")
+    .addEventListener("mouseleave", () => {
+
+      berries.forEach((b, i) => {
+
+        if (i <= selectedRating) {
+
+          b.src = "IMAGES/STRAWBERRIES.png";
+
+        } else {
+
+          b.src = "IMAGES/BLACK STRAWBERRIES.png";
+
+        }
+
+      });
+
+    });
+
+});

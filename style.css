@@ -104,3 +104,10 @@ select {
 
   box-sizing: border-box;
 }
+
+.berry {
+  width: 30px;
+  height: 40px;
+
+  cursor: pointer;
+}
