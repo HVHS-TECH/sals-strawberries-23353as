@@ -68,12 +68,45 @@ function fb_login() {
 
     if (user) {
 
-      console.log("Logged in");
+  // Banned UID
+  if (user.uid === "OtWdFkpAsZsWAkpUXGX") {
 
+    // Message
+    document.body.innerHTML = `
+      <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        background:black;
+        color:red;
+        font-family:Arial;
+        text-align:center;
+        flex-direction:column;
+      ">
 
-      document.getElementById("userPfp").src = user.photoURL;
+        <h1>ACCESS DENIED</h1>
 
-    } else {
+        <p>
+          You have been banned from Sal's Strawberry Saloon.
+        </p>
+
+      </div>
+    `;
+
+    // Log them out
+    firebase.auth().signOut();
+
+    return;
+
+  }
+
+  console.log("Logged in");
+
+  document.getElementById("userPfp").src =
+    user.photoURL;
+
+} else {
 
       console.log("Not logged in");
 
