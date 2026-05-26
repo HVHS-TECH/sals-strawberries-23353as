@@ -3,7 +3,7 @@ console.log("Running Sal's Strawberries");
 // -----------------------------------
 // Form Function
 // -----------------------------------
-let selectedRating = 0;
+let selectedRating = -1;
 
 function writeForm() {
 
@@ -186,15 +186,30 @@ function reviews() {
     return;
   }
 
+  if (selectedRating < 0) {
+    alert("Please choose a strawberry rating.");
+    return;
+  }
+
   firebase.database().ref("reviews").push({
 
     name: user.displayName,
     review: reviewText,
-    profilePicture: user.photoURL
+    profilePicture: user.photoURL,
+
+
+    rating: selectedRating + 1
 
   });
 
   document.getElementById("reviewText").value = "";
+
+
+  selectedRating = -1;
+
+  document.querySelectorAll(".berry").forEach((berry) => {
+    berry.src = "IMAGES/BLACK STRAWBERRIES.png";
+  });
 
   document.getElementById("reviewSection").style.display = "block";
 
@@ -217,11 +232,34 @@ function loadReviews() {
 
         let review = data[id];
 
+        // Create strawberry rating display
+        let strawberries = "";
+
+        for (let i = 0; i < review.rating; i++) {
+          strawberries += `
+            <img 
+              src="IMAGES/STRAWBERRIES.png" 
+              width="20"
+            >
+          `;
+        }
+
         html += `
           <div class="reviewCard">
-            <img src="${review.profilePicture}" width="50">
+
+            <img 
+              src="${review.profilePicture}" 
+              width="50"
+            >
+
+            <div>
+              ${strawberries}
+            </div>
+
             <h3>${review.name}</h3>
+
             <p>${review.review}</p>
+
           </div>
         `;
 
@@ -293,7 +331,6 @@ function fruitRanks() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  let selectedRating = -1;
 
   const berries = document.querySelectorAll(".berry");
 
