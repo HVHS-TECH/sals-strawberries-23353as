@@ -68,45 +68,12 @@ function fb_login() {
 
     if (user) {
 
-  // Banned UID
-  if (user.uid === "OtWdFkpAsZsWAkpUXGX") {
+      console.log("Logged in");
 
-    // Message
-    document.body.innerHTML = `
-      <div style="
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-        background:black;
-        color:red;
-        font-family:Arial;
-        text-align:center;
-        flex-direction:column;
-      ">
 
-        <h1>ACCESS DENIED</h1>
+      document.getElementById("userPfp").src = user.photoURL;
 
-        <p>
-          You have been banned from Sal's Strawberry Saloon.
-        </p>
-
-      </div>
-    `;
-
-    // Log them out
-    firebase.auth().signOut();
-
-    return;
-
-  }
-
-  console.log("Logged in");
-
-  document.getElementById("userPfp").src =
-    user.photoURL;
-
-} else {
+    } else {
 
       console.log("Not logged in");
 
@@ -212,12 +179,18 @@ function reviews() {
   }
 
   const reviewText =
-    document.getElementById("reviewText").value;
+  document.getElementById("reviewText").value.trim();
 
-  if (!reviewText) {
-    alert("Please write a review.");
-    return;
-  }
+if (!reviewText) {
+  alert("Please write a review.");
+  return;
+}
+
+// 200 character limit
+if (reviewText.length > 200) {
+  alert("Reviews must be 200 characters or less.");
+  return;
+}
 
   if (selectedRating < 0) {
     alert("Please choose a strawberry rating.");
@@ -364,6 +337,18 @@ function fruitRanks() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  const reviewBox =
+  document.getElementById("reviewText");
+
+const charCount =
+  document.getElementById("charCount");
+
+reviewBox.addEventListener("input", () => {
+
+  charCount.innerText =
+    `${reviewBox.value.length} / 200 characters`;
+
+});
 
   const berries = document.querySelectorAll(".berry");
 

@@ -165,8 +165,13 @@
         
       </div>
 
-      <textarea id="reviewText" placeholder="Write your review here"></textarea>
+      <textarea 
+  id="reviewText" 
+  placeholder="Write your review here"
+  maxlength="200"
+></textarea>
 
+<p id="charCount">0 / 200 characters</p>
       <button onclick="reviews()">Post Review</button>
 
       <h2>Customer Reviews</h2>
