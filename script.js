@@ -55,7 +55,7 @@ function writeForm() {
 
   console.log("Data sent!");
 
-  document.getElementById("statusMessage").innerText =
+  document.getElementById("statusMessage").innerHTML =
     "Form submitted!";
 }
 // -----------------------------------
@@ -132,7 +132,7 @@ function sendEmail() {
       const favoriteFruit = data.favoriteFruit;
       const fruitQuantity = data.fruitQuantity;
 
-      document.getElementById('emailMessage').innerTEXT = `
+      document.getElementById('emailMessage').innerHTML = `
 
         <div>
           <p>To: ${email}</p>
@@ -271,7 +271,7 @@ function loadReviews() {
 
       }
 
-      document.getElementById("reviewsContainer").innerTEXT = html;
+      document.getElementById("reviewsContainer").innerHTML = html;
 
     });
 
@@ -279,11 +279,11 @@ function loadReviews() {
 
 function showReviews() {
 
-  document.getElementById("emailMessage").innerTEXT = "";
+  document.getElementById("emailMessage").innerHTML = "";
 
   document.getElementById("reviewSection").style.display = "block";
 
-  document.getElementById("statusMessage").innerText = "";
+  document.getElementById("statusMessage").innerHTML = "";
 
   loadReviews();
 
@@ -325,9 +325,9 @@ function fruitRanks() {
       });
 
       // Display it
-      document.getElementById("emailMessage").innerTEXT = html;
+      document.getElementById("emailMessage").innerHTML = html;
       document.getElementById("reviewSection").style.display = "none";
-      document.getElementById("statusMessage").innerText = "";
+      document.getElementById("statusMessage").innerHTML = "";
 
     })
     .catch((error) => {
@@ -345,7 +345,7 @@ const charCount =
 
 reviewBox.addEventListener("input", () => {
 
-  charCount.innerText =
+  charCount.innerHTML =
     `${reviewBox.value.length} / 200 characters`;
 
 });
