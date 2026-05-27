@@ -132,7 +132,7 @@ function sendEmail() {
       const favoriteFruit = data.favoriteFruit;
       const fruitQuantity = data.fruitQuantity;
 
-      document.getElementById('emailMessage').innerHTML = `
+      document.getElementById('emailMessage').innerTEXT = `
 
         <div>
           <p>To: ${email}</p>
@@ -271,7 +271,7 @@ function loadReviews() {
 
       }
 
-      document.getElementById("reviewsContainer").innerHTML = html;
+      document.getElementById("reviewsContainer").innerTEXT = html;
 
     });
 
@@ -279,7 +279,7 @@ function loadReviews() {
 
 function showReviews() {
 
-  document.getElementById("emailMessage").innerHTML = "";
+  document.getElementById("emailMessage").innerTEXT = "";
 
   document.getElementById("reviewSection").style.display = "block";
 
@@ -325,7 +325,7 @@ function fruitRanks() {
       });
 
       // Display it
-      document.getElementById("emailMessage").innerHTML = html;
+      document.getElementById("emailMessage").innerTEXT = html;
       document.getElementById("reviewSection").style.display = "none";
       document.getElementById("statusMessage").innerText = "";
 
